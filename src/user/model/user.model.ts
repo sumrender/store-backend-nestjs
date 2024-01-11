@@ -19,4 +19,8 @@ export class UserRepository extends BaseRepository<User> {
   constructor(@InjectModel(User.name) userModel: Model<User>) {
     super(userModel);
   }
+
+  async findUserByEmail(email: string) {
+    return this.model.findOne({ email });
+  }
 }
