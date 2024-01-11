@@ -5,6 +5,8 @@ import { SharedModule } from './shared/shared.module';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigService } from './shared/configuration';
+import { ProductModule } from './product/product.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   controllers: [AppController],
@@ -24,6 +26,8 @@ import { ConfigService } from './shared/configuration';
         uri: ConfigService.DB_URL,
       }),
     }),
+    ProductModule,
+    UserModule,
   ],
   providers: [AppService],
 })
