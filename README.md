@@ -5,6 +5,7 @@ Ecommerce backend using [Nest](https://github.com/nestjs/nest) framework.
 ## Important Note
 
 `Resolve all comments before production`
+`Remove all console logs that are not needed`
 
 ## Installation
 

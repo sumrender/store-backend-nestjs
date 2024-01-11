@@ -14,7 +14,10 @@ export class ConfigService {
     ConfigService.DB_URL =
       process.env[ConfigEnum.DB_URL] || 'mongodb://127.0.0.1/ecom-test';
   }
-  get(name: ConfigEnum) {
-    return process.env[name] || this.configService.get(name);
+  get(name: string) {
+    return (
+      process.env[name] ||
+      this.configService.get(name as keyof IEnvironmentVariables)
+    );
   }
 }

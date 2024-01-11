@@ -1,4 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
+
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserRepository } from './model/user.model';
@@ -8,19 +10,20 @@ import { EmailAlreadyExistsError } from './exceptions/user.exception';
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
-  async create(createUserDto: CreateUserDto) {
-    const { email } = createUserDto;
+  async register(createUserDto: CreateUserDto) {
+    const { email, password } = createUserDto;
     const userAlreadyExists = await this.userRepository.findUserByEmail(email);
-    console.log(
-      '🚀 ~ UserService ~ create ~ userAlreadyExists:',
-      userAlreadyExists,
-    );
 
     if (userAlreadyExists) {
       throw new EmailAlreadyExistsError();
     }
 
-    return this.userRepository.create(createUserDto);
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = this.userRepository.create({
+      email,
+      password: hashedPassword,
+    });
+    return newUser;
   }
 
   async findAll() {

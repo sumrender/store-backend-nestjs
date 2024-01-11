@@ -32,16 +32,18 @@ export abstract class BaseRepository<TDocument extends BaseDocument> {
     }
   }
 
-  async create(document: TDocument) {
+  async create(document: TDocument): Promise<TDocument> {
     try {
-      const createdDocument = await this.model.create(document);
-      return createdDocument;
+      return this.model.create({
+        ...document,
+        _id: new Types.ObjectId(),
+      });
     } catch (error) {
       BaseRepository.throwMongoError(error);
     }
   }
 
-  async findById(id: string) {
+  async findById(id: string): Promise<TDocument> {
     try {
       const document = await this.model
         .findById(BaseRepository.toObjectId(id))
@@ -50,12 +52,14 @@ export abstract class BaseRepository<TDocument extends BaseDocument> {
       if (!document) {
         throw new NotFoundError();
       }
+
+      return document;
     } catch (error) {
       BaseRepository.throwMongoError(error);
     }
   }
 
-  async find(filterQuery: FilterQuery<TDocument>) {
+  async find(filterQuery: FilterQuery<TDocument>): Promise<TDocument[]> {
     try {
       return this.model.find(filterQuery).lean<TDocument[]>(true);
     } catch (error) {
@@ -63,7 +67,10 @@ export abstract class BaseRepository<TDocument extends BaseDocument> {
     }
   }
 
-  async findByIdAndUpdate(id: string, update: UpdateQuery<TDocument>) {
+  async findByIdAndUpdate(
+    id: string,
+    update: UpdateQuery<TDocument>,
+  ): Promise<TDocument> {
     try {
       return this.model
         .findByIdAndUpdate(BaseRepository.toObjectId(id), update, {
@@ -75,11 +82,11 @@ export abstract class BaseRepository<TDocument extends BaseDocument> {
     }
   }
 
-  async findByIdAndDelete(id: string) {
+  async findByIdAndDelete(id: string): Promise<TDocument> {
     try {
-      return this.model.findByIdAndDelete(BaseRepository.toObjectId(id), {
-        lean: true,
-      });
+      return this.model
+        .findByIdAndDelete(BaseRepository.toObjectId(id))
+        .lean<TDocument>(true);
     } catch (error) {
       BaseRepository.throwMongoError(error);
     }

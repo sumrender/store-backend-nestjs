@@ -1,2 +1,4 @@
+// resolve all comments and console.logs
 Config Service setup looks shady.... and use of it in main. ehhhh
 Remove password when fetching user
+Facing auth module jwt register factory error, making a commit to look at it later
