@@ -8,7 +8,7 @@ import { UnauthorizedError } from 'src/shared/exceptions';
 import { ConfigEnum, ConfigService } from 'src/shared/configuration';
 
 @Injectable()
-export class JwtStrategyService extends PassportStrategy(Strategy) {
+export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
     private readonly configService: ConfigService,
     private readonly authService: AuthService,

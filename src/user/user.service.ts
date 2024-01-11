@@ -3,12 +3,16 @@ import * as bcrypt from 'bcrypt';
 
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { UserRepository } from './model/user.model';
+import { User, UserRepository } from './model/user.model';
 import { EmailAlreadyExistsError } from './exceptions/user.exception';
+import { AuthService } from 'src/shared/auth/auth.service';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(
+    private readonly userRepository: UserRepository,
+    private readonly authService: AuthService,
+  ) {}
 
   async register(createUserDto: CreateUserDto) {
     const { email, password } = createUserDto;
@@ -19,11 +23,15 @@ export class UserService {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = this.userRepository.create({
+    const newUser = await this.userRepository.create({
       email,
       password: hashedPassword,
     });
-    return newUser;
+    return this.authService.generateJWT(newUser);
+  }
+
+  async login(user: User) {
+    return this.authService.generateJWT(user);
   }
 
   async findAll() {
