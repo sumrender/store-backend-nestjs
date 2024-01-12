@@ -4,7 +4,6 @@ import {
   Post,
   Body,
   Patch,
-  Param,
   Delete,
   Req,
   UseGuards,
@@ -14,6 +13,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { LocalAuthGuard } from 'src/shared/auth/guards/local-auth.guard';
 import { JwtAuthGuard } from 'src/shared/auth/guards/jwt-auth.guard';
+import { User } from './model/user.model';
 
 @Controller('users')
 export class UserController {
@@ -36,26 +36,17 @@ export class UserController {
     return req.user;
   }
 
-  @Get()
-  async findAll() {
-    return this.userService.findAll();
+  @UseGuards(JwtAuthGuard)
+  @Patch()
+  async update(@Req() req, @Body() updateProductDto: UpdateUserDto) {
+    const user: User = req.user;
+    return this.userService.update(user._id.toString(), updateProductDto);
   }
 
-  @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return this.userService.findById(id);
-  }
-
-  @Patch(':id')
-  async update(
-    @Param('id') id: string,
-    @Body() updateProductDto: UpdateUserDto,
-  ) {
-    return this.userService.update(id, updateProductDto);
-  }
-
-  @Delete(':id')
-  async remove(@Param('id') id: string) {
-    return this.userService.deleteById(id);
+  @UseGuards(JwtAuthGuard)
+  @Delete()
+  async delete(@Req() req) {
+    const user: User = req.user;
+    return this.userService.deleteById(user._id.toString());
   }
 }

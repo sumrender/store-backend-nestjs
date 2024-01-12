@@ -5,8 +5,14 @@ import { BaseDocument, BaseRepository } from 'src/shared/base-model';
 
 @Schema({ versionKey: false })
 export class Product extends BaseDocument {
-  @Prop()
+  @Prop({ required: true, unique: true })
   name: string;
+
+  @Prop({ default: 0, required: false })
+  quantity?: number;
+
+  @Prop({ required: true })
+  price: number;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);

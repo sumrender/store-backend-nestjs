@@ -43,6 +43,21 @@ export abstract class BaseRepository<TDocument extends BaseDocument> {
     }
   }
 
+  async createMany(documents: TDocument[]): Promise<TDocument[]> {
+    try {
+      const createdDocuments = await this.model.create(
+        documents.map((doc) => ({
+          ...doc,
+          _id: new Types.ObjectId(),
+        })),
+      );
+
+      return createdDocuments;
+    } catch (error) {
+      BaseRepository.throwMongoError(error);
+    }
+  }
+
   async findById(id: string): Promise<TDocument> {
     try {
       const document = await this.model

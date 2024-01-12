@@ -2,3 +2,5 @@
 Config Service setup looks shady.... and use of it in main. ehhhh
 Remove password when fetching user
 Facing auth module jwt register factory error, making a commit to look at it later
+_id saving error in base repository
+unable to resolve quantity optional issue
