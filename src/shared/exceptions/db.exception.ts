@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { MongooseError } from 'mongoose';
-import { MessagesEnum } from '../enums/messages.enum';
+import { MessagesEnum } from '../enums';
 
 export class DBException extends HttpException {
   constructor(error: MongooseError) {

@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService as NestConfigService } from '@nestjs/config';
-import { ConfigEnum } from './configuration.enum';
+
 import { IEnvironmentVariables } from './env-vars.interface';
+import { ConfigEnum } from '../enums';
 
 @Injectable()
 export class ConfigService {

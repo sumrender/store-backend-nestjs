@@ -1,5 +1,5 @@
 import { HttpStatus } from '@nestjs/common';
-import { MessagesEnum } from 'src/shared/enums/messages.enum';
+import { MessagesEnum } from 'src/shared/enums';
 import { ValidationError } from 'src/shared/exceptions';
 
 export class EmailAlreadyExistsError extends ValidationError {

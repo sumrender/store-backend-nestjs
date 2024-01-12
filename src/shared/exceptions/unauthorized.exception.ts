@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
 
-import { MessagesEnum } from '../enums/messages.enum';
+import { MessagesEnum } from '../enums';
 
 export class UnauthorizedError extends HttpException {
   constructor() {
