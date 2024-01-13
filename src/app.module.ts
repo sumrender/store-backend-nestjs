@@ -8,6 +8,7 @@ import { ConfigService } from './shared/configuration';
 import { ProductModule } from './product/product.module';
 import { UserModule } from './user/user.module';
 import { AdminModule } from './admin/admin.module';
+import { OrderModule } from './order/order.module';
 
 @Module({
   controllers: [AppController],
@@ -30,6 +31,7 @@ import { AdminModule } from './admin/admin.module';
     ProductModule,
     UserModule,
     AdminModule,
+    OrderModule,
   ],
   providers: [AppService],
 })

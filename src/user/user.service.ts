@@ -15,6 +15,7 @@ export class UserService {
   ) {}
 
   async register(createUserDto: CreateUserDto) {
+    // need to add email verification and OAuth
     const { email, password } = createUserDto;
     const userAlreadyExists = await this.userRepository.findUserByEmail(email);
 
