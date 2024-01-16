@@ -1,7 +1,13 @@
-import { IsArray, IsNumber, IsString, ValidateNested } from 'class-validator';
+import {
+  IsArray,
+  IsNumber,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 
-class AddProductDto {
+export class AddProductDto {
   @IsString()
   name: string;
 
@@ -10,6 +16,16 @@ class AddProductDto {
 
   @IsNumber()
   price: number;
+
+  @IsString()
+  category: string;
+
+  @IsString()
+  description: string;
+
+  @IsArray()
+  @IsOptional()
+  images: string[];
 }
 
 export class AddProductsDto {

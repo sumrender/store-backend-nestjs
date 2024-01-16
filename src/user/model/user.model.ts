@@ -3,6 +3,7 @@ import { InjectModel, Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { BaseDocument, BaseRepository } from 'src/shared/base-model';
 import { UserRoleEnum } from 'src/shared/enums';
+
 @Schema({ versionKey: false })
 export class User extends BaseDocument {
   @Prop({ required: true, unique: true })
@@ -13,6 +14,9 @@ export class User extends BaseDocument {
 
   @Prop({ default: UserRoleEnum.USER, required: false })
   role?: UserRoleEnum;
+
+  // address []
+  // verified?
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

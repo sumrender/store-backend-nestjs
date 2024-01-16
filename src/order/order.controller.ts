@@ -8,6 +8,7 @@ import {
   Delete,
   Req,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { UpdateOrderDto } from './dto/update-order.dto';
@@ -15,6 +16,7 @@ import { User } from 'src/user/model/user.model';
 import { JwtAuthGuard } from 'src/shared/auth/guards/jwt-auth.guard';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { IsAdmin } from 'src/shared/auth/guards/admin.guard';
+import { FindOrdersDto } from './dto/find-orders.dto';
 
 @UseGuards(JwtAuthGuard)
 @Controller('orders')
@@ -24,12 +26,12 @@ export class OrderController {
   @Post()
   create(@Req() req, @Body() createOrderDto: CreateOrderDto) {
     const user: User = req.user;
-    return this.orderService.create(user._id, createOrderDto);
+    return this.orderService.create(user, createOrderDto);
   }
 
   @Get()
-  findAll() {
-    return this.orderService.findAll();
+  findAll(@Query() findOrdersDto: FindOrdersDto) {
+    return this.orderService.findAll(findOrdersDto);
   }
 
   @Get(':id')

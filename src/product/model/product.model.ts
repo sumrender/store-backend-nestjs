@@ -13,6 +13,15 @@ export class Product extends BaseDocument {
 
   @Prop({ required: true })
   price: number;
+
+  @Prop({ required: true })
+  category: string;
+
+  @Prop({ required: true })
+  description: string;
+
+  @Prop({ required: false, default: [] })
+  images: string[];
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);

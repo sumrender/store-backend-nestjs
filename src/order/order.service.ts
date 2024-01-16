@@ -1,28 +1,35 @@
 import { Injectable } from '@nestjs/common';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { OrderRepository } from './model/order.model';
-import { Types } from 'mongoose';
 import { CreateOrderDto } from './dto/create-order.dto';
+import { FindOrdersDto } from './dto/find-orders.dto';
+import { User } from 'src/user/model/user.model';
 
 @Injectable()
 export class OrderService {
   constructor(private readonly orderRepository: OrderRepository) {}
-  create(userId: Types.ObjectId, createOrderDto: CreateOrderDto) {
+  create(user: User, createOrderDto: CreateOrderDto) {
     // call the payment service, it does stuff,
     // then create the order
+
     return this.orderRepository.create({
-      user: userId,
-      ...createOrderDto,
+      user: {
+        email: user.email,
+        user: user._id,
+        address: createOrderDto.address,
+      },
+      paymentMode: createOrderDto.paymentMode,
       isPaid: false,
+      orderItems: createOrderDto.orderItems,
     });
   }
 
-  findAll() {
-    return `This action returns all order`;
+  findAll(findOrdersDto: FindOrdersDto) {
+    return this.orderRepository.find(findOrdersDto);
   }
 
   findOne(id: string) {
-    return this.orderRepository.fetchOrder(id);
+    return this.orderRepository.findById(id);
   }
 
   async update(id: string, updateOrderDto: UpdateOrderDto) {

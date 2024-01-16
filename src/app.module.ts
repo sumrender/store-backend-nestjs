@@ -9,6 +9,8 @@ import { ProductModule } from './product/product.module';
 import { UserModule } from './user/user.module';
 import { AdminModule } from './admin/admin.module';
 import { OrderModule } from './order/order.module';
+import { BillboardModule } from './billboard/billboard.module';
+import { CategoryModule } from './category/category.module';
 
 @Module({
   controllers: [AppController],
@@ -32,6 +34,8 @@ import { OrderModule } from './order/order.module';
     UserModule,
     AdminModule,
     OrderModule,
+    BillboardModule,
+    CategoryModule,
   ],
   providers: [AppService],
 })
