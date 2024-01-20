@@ -1,5 +1,6 @@
 import {
   IsArray,
+  IsBoolean,
   IsNumber,
   IsOptional,
   IsString,
@@ -24,8 +25,11 @@ export class AddProductDto {
   description: string;
 
   @IsArray()
-  @IsOptional()
   images: string[];
+
+  @IsBoolean()
+  @IsOptional()
+  isFeatured?: boolean;
 }
 
 export class AddProductsDto {

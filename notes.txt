@@ -9,5 +9,12 @@ product and category not linked together right now
 
 
 
+
 // admin
 baseActions class?
+ensure that atleast 1 image is there for a product
+
+// app only features
+cart, my favorites
+getAllOrders should only return user orders: need to check roles and send data accordingly
+

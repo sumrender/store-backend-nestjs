@@ -4,6 +4,7 @@ import { OrderRepository } from './model/order.model';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { FindOrdersDto } from './dto/find-orders.dto';
 import { User } from 'src/user/model/user.model';
+import { Types } from 'mongoose';
 
 @Injectable()
 export class OrderService {
@@ -11,12 +12,14 @@ export class OrderService {
   create(user: User, createOrderDto: CreateOrderDto) {
     // call the payment service, it does stuff,
     // then create the order
+    const { street, city, state, zipCode } = user;
+    const address = `${street}, ${city}, ${state}, ${zipCode}`;
 
     return this.orderRepository.create({
       user: {
         email: user.email,
         user: user._id,
-        address: createOrderDto.address,
+        address,
       },
       paymentMode: createOrderDto.paymentMode,
       isPaid: false,
@@ -26,6 +29,10 @@ export class OrderService {
 
   findAll(findOrdersDto: FindOrdersDto) {
     return this.orderRepository.find(findOrdersDto);
+  }
+
+  findAllUserOrders(userId: Types.ObjectId) {
+    return this.orderRepository.find({ 'user.user': userId });
   }
 
   findOne(id: string) {

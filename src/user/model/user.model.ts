@@ -15,8 +15,23 @@ export class User extends BaseDocument {
   @Prop({ default: UserRoleEnum.USER, required: false })
   role?: UserRoleEnum;
 
-  // address []
-  // verified?
+  @Prop({ required: false })
+  firstName?: string;
+
+  @Prop({ required: false })
+  lastName?: string;
+
+  @Prop({ required: false })
+  street?: string;
+
+  @Prop({ required: false })
+  city?: string;
+
+  @Prop({ required: false })
+  state?: string;
+
+  @Prop({ required: false })
+  zipCode?: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

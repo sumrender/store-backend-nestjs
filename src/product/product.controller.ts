@@ -6,10 +6,12 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { AddProductsDto } from './dto/add-products.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { FindProductsDto } from './dto/find-products.dto';
 
 @Controller('products')
 export class ProductController {
@@ -21,8 +23,13 @@ export class ProductController {
   }
 
   @Get()
-  async findAll() {
-    return this.productService.findAll();
+  async findAll(@Query() query: FindProductsDto) {
+    return this.productService.findAll(query);
+  }
+
+  @Get('/search')
+  async searchProducts(@Query('find') searchString: string) {
+    return this.productService.searchProducts(searchString);
   }
 
   @Get(':id')

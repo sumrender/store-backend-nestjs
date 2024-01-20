@@ -6,6 +6,7 @@ import {
   IsMongoId,
   IsEnum,
   IsString,
+  IsUrl,
 } from 'class-validator';
 import { PaymentModeEnum } from 'src/shared/enums/order.enum';
 import { Types } from 'mongoose';
@@ -23,15 +24,16 @@ export class OrderItemDto {
 
   @IsString()
   name: string;
+
+  @IsString()
+  @IsUrl()
+  image: string;
 }
 
 export class CreateOrderDto {
   @IsNotEmpty()
   @IsEnum(PaymentModeEnum)
   paymentMode: PaymentModeEnum;
-
-  @IsString()
-  address: string;
 
   @IsArray()
   @ValidateNested({ each: true })

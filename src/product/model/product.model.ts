@@ -22,6 +22,9 @@ export class Product extends BaseDocument {
 
   @Prop({ required: false, default: [] })
   images: string[];
+
+  @Prop({ required: false, default: false })
+  isFeatured?: boolean;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);
@@ -30,5 +33,21 @@ export const ProductSchema = SchemaFactory.createForClass(Product);
 export class ProductRepository extends BaseRepository<Product> {
   constructor(@InjectModel(Product.name) productModel: Model<Product>) {
     super(productModel);
+  }
+
+  async searchProducts(searchString: string): Promise<Product[]> {
+    try {
+      const regex = new RegExp(searchString, 'i');
+      // 'i' for case-insensitive match
+
+      return await this.model
+        .find({
+          $or: [{ name: { $regex: regex } }, { category: { $regex: regex } }],
+        })
+        .lean<Product[]>(true);
+    } catch (error) {
+      // Handle errors appropriately
+      throw error;
+    }
   }
 }

@@ -5,6 +5,7 @@ import { User, UserRepository } from 'src/user/model/user.model';
 import { UnauthorizedError } from '../exceptions';
 import { IJwtPayload } from './jwt-payload.interface';
 import { JwtService } from '@nestjs/jwt';
+import { UserNotFoundError } from '../exceptions/user-not-found.exception';
 
 @Injectable()
 export class AuthService {
@@ -15,7 +16,9 @@ export class AuthService {
 
   async validateUser(email: string, password: string): Promise<User> {
     const user = await this.userRepository.findUserByEmail(email);
-
+    if (!user) {
+      throw new UserNotFoundError();
+    }
     const passwordValid = await bcrypt.compare(password, user.password);
 
     if (!passwordValid) {
@@ -29,7 +32,7 @@ export class AuthService {
     const payload = { email: user.email, sub: user._id };
     return {
       user,
-      access_token: this.jwtService.sign(payload),
+      accessToken: this.jwtService.sign(payload),
     };
   }
 

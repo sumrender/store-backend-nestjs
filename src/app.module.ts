@@ -11,10 +11,21 @@ import { AdminModule } from './admin/admin.module';
 import { OrderModule } from './order/order.module';
 import { BillboardModule } from './billboard/billboard.module';
 import { CategoryModule } from './category/category.module';
+import { LoggerModule } from 'nestjs-pino';
 
 @Module({
   controllers: [AppController],
   imports: [
+    LoggerModule.forRoot({
+      pinoHttp: {
+        transport: {
+          target: 'pino-pretty',
+          // options: {
+          //   singleLine: true,
+          // },
+        },
+      },
+    }),
     SharedModule,
     ConfigModule.forRoot({
       isGlobal: true,

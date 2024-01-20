@@ -82,6 +82,30 @@ export abstract class BaseRepository<TDocument extends BaseDocument> {
     }
   }
 
+  async findWithPagination(
+    filterQuery: FilterQuery<TDocument>,
+    currentPage: number = 1,
+    resultsPerPage: number = 10,
+  ): Promise<TDocument[]> {
+    try {
+      console.log(
+        'find with pagination called: ',
+        filterQuery,
+        currentPage,
+        resultsPerPage,
+      );
+      const skipCount = (currentPage - 1) * resultsPerPage;
+
+      return this.model
+        .find(filterQuery)
+        .skip(skipCount)
+        .limit(resultsPerPage)
+        .lean<TDocument[]>(true);
+    } catch (error) {
+      BaseRepository.throwMongoError(error);
+    }
+  }
+
   async findByIdAndUpdate(
     id: string,
     update: UpdateQuery<TDocument>,

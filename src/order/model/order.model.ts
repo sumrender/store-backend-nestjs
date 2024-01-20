@@ -11,6 +11,7 @@ export interface OrderItem {
   name: string;
   price: number;
   quantity: number;
+  image: string;
 }
 
 export interface OrderUser {
@@ -57,6 +58,7 @@ export class Order extends BaseDocument {
         price: Number,
         quantity: Number,
         name: String,
+        image: String,
       },
     ],
     required: true,
