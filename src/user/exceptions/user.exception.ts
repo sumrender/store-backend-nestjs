@@ -2,9 +2,15 @@ import { HttpStatus } from '@nestjs/common';
 import { MessagesEnum } from 'src/shared/enums';
 import { ValidationError } from 'src/shared/exceptions';
 
-export class EmailAlreadyExistsError extends ValidationError {
+export class MobileNumberAlreadyExists extends ValidationError {
   constructor() {
-    super(MessagesEnum.EMAIL_ALREADY_EXISTS, HttpStatus.CONFLICT);
+    super(MessagesEnum.MOBILE_NUMBER_ALREADY_EXISTS, HttpStatus.CONFLICT);
+  }
+}
+
+export class UserDoesNotExistError extends ValidationError {
+  constructor() {
+    super(MessagesEnum.USER_NOT_FOUND, HttpStatus.BAD_REQUEST);
   }
 }
 
@@ -18,19 +24,21 @@ export class UserNotVerifiedError extends ValidationError {
   }
 }
 
-export class InvalidCredentialsError extends ValidationError {
+export class InvalidMobileNumberError extends ValidationError {
   constructor() {
-    super(MessagesEnum.INVALID_CREDENTIALS, HttpStatus.BAD_REQUEST);
+    super(MessagesEnum.INVALID_MOBILE_NUMBER, HttpStatus.BAD_REQUEST);
   }
 }
 
-export class InvalidRefreshTokenError extends ValidationError {
+export class OtpExpiredError extends ValidationError {
   constructor() {
-    super(
-      MessagesEnum.INVALID_TOKEN,
-      HttpStatus.UNAUTHORIZED,
-      'InvalidRefreshTokenError',
-    );
+    super(MessagesEnum.OTP_EXPIRED, HttpStatus.BAD_REQUEST);
+  }
+}
+
+export class InvalidOtpError extends ValidationError {
+  constructor() {
+    super(MessagesEnum.INVALID_OTP, HttpStatus.UNAUTHORIZED);
   }
 }
 
@@ -41,11 +49,5 @@ export class UserAlreadyVerifiedError extends ValidationError {
       HttpStatus.CONFLICT,
       'UserAlreadyVerifiedError',
     );
-  }
-}
-
-export class IncorrectOldPasswordError extends ValidationError {
-  constructor() {
-    super(MessagesEnum.INCORRECT_OLD_PASSWORD, HttpStatus.BAD_REQUEST);
   }
 }

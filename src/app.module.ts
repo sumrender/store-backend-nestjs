@@ -7,7 +7,6 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigService } from './shared/configuration';
 import { ProductModule } from './product/product.module';
 import { UserModule } from './user/user.module';
-import { AdminModule } from './admin/admin.module';
 import { OrderModule } from './order/order.module';
 import { BillboardModule } from './billboard/billboard.module';
 import { CategoryModule } from './category/category.module';
@@ -43,7 +42,6 @@ import { LoggerModule } from 'nestjs-pino';
     }),
     ProductModule,
     UserModule,
-    AdminModule,
     OrderModule,
     BillboardModule,
     CategoryModule,

@@ -1,20 +1,21 @@
-// resolve all comments and console.logs
+
+
+// resolve all comments and console.logs - done
+
+need to test with lot of products, to ensure view does not break
+display multiple images in app
+
+
+
+
+
+
+// ignore list
 Config Service setup looks shady.... and use of it in main. ehhhh
-Remove password when fetching user
-Facing auth module jwt register factory error, making a commit to look at it later
 _id saving error in base repository
-unable to resolve quantity optional issue
-product should not have its total inventory amount in the product schema itself
-product and category not linked together right now
-
-
-
-
-// admin
 baseActions class?
-ensure that atleast 1 image is there for a product
+
 
 // app only features
 cart, my favorites
-getAllOrders should only return user orders: need to check roles and send data accordingly
 

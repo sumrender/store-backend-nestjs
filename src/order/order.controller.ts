@@ -5,21 +5,20 @@ import {
   Body,
   Patch,
   Param,
-  Delete,
   Req,
-  UseGuards,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { User } from 'src/user/model/user.model';
-import { JwtAuthGuard } from 'src/shared/auth/guards/jwt-auth.guard';
 import { CreateOrderDto } from './dto/create-order.dto';
-import { IsAdmin } from 'src/shared/auth/guards/admin.guard';
 import { FindOrdersDto } from './dto/find-orders.dto';
-import { UserRoleEnum } from 'src/shared/enums';
+import { AuthGuard } from 'src/shared/guards/auth.guard';
+import { VerifyPaymentDto } from './dto/verify-payment.dto';
+import { AdminGuard } from 'src/shared/guards/admin.guard';
 
-@UseGuards(JwtAuthGuard)
+@UseGuards(AuthGuard)
 @Controller('orders')
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
@@ -30,13 +29,18 @@ export class OrderController {
     return this.orderService.create(user, createOrderDto);
   }
 
+  @Post('/app/verify')
+  async verifyPayment(@Req() req, @Body() verifyPaymentDto: VerifyPaymentDto) {
+    const user: User = req.user;
+    const res = await this.orderService.verifyPayment(user, verifyPaymentDto);
+    return res;
+  }
+
   @Get()
-  @UseGuards(IsAdmin)
+  @UseGuards(AdminGuard)
   findAll(@Req() req, @Query() findOrdersDto: FindOrdersDto) {
     const user: User = req.user;
-    if (user.role === UserRoleEnum.ADMIN) {
-      return this.orderService.findAll(findOrdersDto);
-    }
+    return this.orderService.findAll(user, findOrdersDto);
   }
 
   @Get('/app')
@@ -46,21 +50,17 @@ export class OrderController {
   }
 
   @Get(':id')
+  @UseGuards(AdminGuard)
   findOne(@Param('id') id: string) {
     return this.orderService.findOne(id);
   }
 
-  @UseGuards(IsAdmin)
   @Patch(':id')
+  @UseGuards(AdminGuard)
   async changeOrderStatus(
     @Param('id') orderId: string,
     @Body() updateOrderDto: UpdateOrderDto,
   ) {
     return this.orderService.update(orderId, updateOrderDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.orderService.remove(+id);
   }
 }

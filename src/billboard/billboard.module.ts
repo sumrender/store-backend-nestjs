@@ -7,12 +7,14 @@ import {
   BillboardSchema,
 } from './models/billboard.model';
 import { MongooseModule } from '@nestjs/mongoose';
+import { UserModule } from 'src/user/user.module';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: Billboard.name, schema: BillboardSchema },
     ]),
+    UserModule,
   ],
   controllers: [BillboardController],
   providers: [BillboardService, BillboardRepository],

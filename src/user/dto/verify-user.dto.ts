@@ -1,7 +1,11 @@
 import { IsDefined, IsString } from 'class-validator';
 
-export class CreateUserDto {
-  @IsDefined()
+export class VerifyUserDto {
   @IsString()
+  @IsDefined()
   mobileNumber: string;
+
+  @IsString()
+  @IsDefined()
+  otp: string;
 }

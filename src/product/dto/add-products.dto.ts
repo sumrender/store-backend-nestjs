@@ -1,6 +1,7 @@
 import {
   IsArray,
   IsBoolean,
+  IsNotEmpty,
   IsNumber,
   IsOptional,
   IsString,
@@ -25,6 +26,7 @@ export class AddProductDto {
   description: string;
 
   @IsArray()
+  @IsNotEmpty({ each: true, message: 'At least one image is required' })
   images: string[];
 
   @IsBoolean()

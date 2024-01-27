@@ -1,23 +1,25 @@
 import {
   Body,
   Controller,
-  Delete,
   Get,
   Param,
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { AddProductsDto } from './dto/add-products.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { FindProductsDto } from './dto/find-products.dto';
+import { AdminGuard } from 'src/shared/guards/admin.guard';
 
 @Controller('products')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Post()
+  @UseGuards(AdminGuard)
   async addProducts(@Body() addProductsDto: AddProductsDto) {
     return this.productService.addProducts(addProductsDto);
   }
@@ -37,6 +39,7 @@ export class ProductController {
     return this.productService.findById(id);
   }
 
+  @UseGuards(AdminGuard)
   @Patch(':id')
   async update(
     @Param('id') id: string,
@@ -45,8 +48,9 @@ export class ProductController {
     return this.productService.update(id, updateProductDto);
   }
 
-  @Delete(':id')
-  async remove(@Param('id') id: string) {
-    return this.productService.remove(id);
-  }
+  // @UseGuards(AdminGuard)
+  // @Delete(':id')
+  // async remove(@Param('id') id: string) {
+  //   return this.productService.remove(id);
+  // }
 }

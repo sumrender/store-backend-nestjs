@@ -7,12 +7,14 @@ import {
   CategoryRepository,
   CategorySchema,
 } from './models/category.model';
+import { UserModule } from 'src/user/user.module';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: Category.name, schema: CategorySchema },
     ]),
+    UserModule,
   ],
   controllers: [CategoryController],
   providers: [CategoryService, CategoryRepository],

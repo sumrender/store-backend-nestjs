@@ -4,13 +4,18 @@ import { Model } from 'mongoose';
 import { BaseDocument, BaseRepository } from 'src/shared/base-model';
 import { UserRoleEnum } from 'src/shared/enums';
 
+interface UserOtp {
+  otp: string;
+  expiredAt: Date;
+}
+
 @Schema({ versionKey: false })
 export class User extends BaseDocument {
   @Prop({ required: true, unique: true })
-  email: string;
+  mobileNumber: string;
 
-  @Prop()
-  password: string;
+  @Prop({ required: false, default: false })
+  verified?: string;
 
   @Prop({ default: UserRoleEnum.USER, required: false })
   role?: UserRoleEnum;
@@ -32,6 +37,16 @@ export class User extends BaseDocument {
 
   @Prop({ required: false })
   zipCode?: string;
+
+  @Prop({
+    required: false,
+    type: {
+      otp: { type: String },
+      expiredAt: { type: Date },
+    },
+    _id: false,
+  })
+  otp?: UserOtp;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
@@ -42,7 +57,7 @@ export class UserRepository extends BaseRepository<User> {
     super(userModel);
   }
 
-  async findUserByEmail(email: string) {
-    return this.model.findOne({ email });
+  async findUserByMobileNumber(mobileNumber: string) {
+    return this.model.findOne({ mobileNumber });
   }
 }

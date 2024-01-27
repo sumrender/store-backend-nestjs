@@ -88,12 +88,6 @@ export abstract class BaseRepository<TDocument extends BaseDocument> {
     resultsPerPage: number = 10,
   ): Promise<TDocument[]> {
     try {
-      console.log(
-        'find with pagination called: ',
-        filterQuery,
-        currentPage,
-        resultsPerPage,
-      );
       const skipCount = (currentPage - 1) * resultsPerPage;
 
       return this.model

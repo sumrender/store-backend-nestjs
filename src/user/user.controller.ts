@@ -11,9 +11,10 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { LocalAuthGuard } from 'src/shared/auth/guards/local-auth.guard';
-import { JwtAuthGuard } from 'src/shared/auth/guards/jwt-auth.guard';
 import { User } from './model/user.model';
+import { AuthGuard } from 'src/shared/guards/auth.guard';
+import { VerifyUserDto } from './dto/verify-user.dto';
+import { AdminGuard } from 'src/shared/guards/admin.guard';
 
 @Controller('users')
 export class UserController {
@@ -24,27 +25,31 @@ export class UserController {
     return this.userService.register(createUserDto);
   }
 
-  @Post('login')
-  @UseGuards(LocalAuthGuard)
-  async login(@Req() req) {
-    return this.userService.login(req.user);
+  @Post('verify')
+  async verifyUser(@Body() props: VerifyUserDto) {
+    return this.userService.verifyUser(props);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @Post('login')
+  async login(@Body() props: CreateUserDto) {
+    return this.userService.login(props);
+  }
+
+  @UseGuards(AuthGuard)
   @Get('profile')
   async getProfile(@Req() req) {
     return req.user;
   }
 
-  @UseGuards(JwtAuthGuard)
   @Patch()
+  @UseGuards(AuthGuard)
   async update(@Req() req, @Body() updateProductDto: UpdateUserDto) {
     const user: User = req.user;
     return this.userService.update(user._id.toString(), updateProductDto);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Delete()
+  @UseGuards(AdminGuard)
   async delete(@Req() req) {
     const user: User = req.user;
     return this.userService.deleteById(user._id.toString());

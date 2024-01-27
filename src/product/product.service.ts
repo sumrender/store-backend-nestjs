@@ -14,6 +14,7 @@ export class ProductService {
 
   async findAll(query: FindProductsDto) {
     const filter: any = {};
+    filter.quantity = { $gte: 1 };
     if (query.name) {
       filter.name = query.name;
     }
@@ -35,7 +36,7 @@ export class ProductService {
         query.resultsPerPage,
       );
     }
-    return this.productRepository.find(query);
+    return this.productRepository.find(filter);
   }
 
   async searchProducts(searchString: string) {

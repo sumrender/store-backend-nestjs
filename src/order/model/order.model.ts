@@ -15,24 +15,31 @@ export interface OrderItem {
 }
 
 export interface OrderUser {
-  email: string;
+  mobileNumber: string;
   address: string;
   user: Types.ObjectId;
 }
 
 @Schema({ versionKey: false })
 export class Order extends BaseDocument {
-  // transaction id also most probably
-
   @Prop({
     type: {
       user: { type: Types.ObjectId, ref: User.name },
-      email: { type: String },
+      mobileNumber: { type: String },
       address: { type: String },
     },
     _id: false,
   })
   user: OrderUser;
+
+  @Prop({ required: true })
+  finalPrice: number;
+
+  @Prop({ required: false })
+  razorpayOrderId?: string;
+
+  @Prop({ required: false })
+  isOnlinePaymentVerified?: boolean;
 
   @Prop({
     type: String,

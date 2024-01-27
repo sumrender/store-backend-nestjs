@@ -35,6 +35,10 @@ export class ProductRepository extends BaseRepository<Product> {
     super(productModel);
   }
 
+  async reduceQuantity(productId: string, quantity: number) {
+    return this.findByIdAndUpdate(productId, { $inc: { quantity: -quantity } });
+  }
+
   async searchProducts(searchString: string): Promise<Product[]> {
     try {
       const regex = new RegExp(searchString, 'i');
@@ -46,7 +50,6 @@ export class ProductRepository extends BaseRepository<Product> {
         })
         .lean<Product[]>(true);
     } catch (error) {
-      // Handle errors appropriately
       throw error;
     }
   }
